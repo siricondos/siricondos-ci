@@ -12,5 +12,5 @@ data:
   POSTGRES_DB_NAME: siricondos
   POSTGRES_USER: postgres
   PAYSTACK_CALLBACK_URL: https://siricondos.com/partner/payments/return
-  LISTING_FEE: '3'
+  LISTING_FEE: '30'
   EUREKA_DEFAULT_ZONE: http://discovery-service/eureka/

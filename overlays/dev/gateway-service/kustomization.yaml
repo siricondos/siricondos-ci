@@ -3,7 +3,7 @@ resources:
 - ../../../base/gateway-service
 images:
 - name: registry.siricondos.com/siricondos/gateway-service
-  newTag: v0.0.0-dev
+  newTag: v0.0.1-dev
 patches:
 - target:
     kind: Ingress

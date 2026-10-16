@@ -1,6 +1,22 @@
 # Helm chart traefik/traefik 42.0.0. K3s ServiceLB exposes ports 80/443.
 deployment:
   kind: DaemonSet
+  initContainers:
+  - name: acme-permissions
+    image: docker.io/traefik:v3.7.14
+    command:
+    - sh
+    - -c
+    - touch /data/acme.json && chmod 600 /data/acme.json
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities:
+        drop:
+        - ALL
+    volumeMounts:
+    - name: data
+      mountPath: /data
 ingressClass:
   enabled: true
   isDefaultClass: true

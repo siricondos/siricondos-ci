@@ -14,3 +14,4 @@ data:
   PAYSTACK_CALLBACK_URL: https://siricondos.com/partner/payments/return
   LISTING_FEE: '500'
   EUREKA_DEFAULT_ZONE: http://discovery-service/eureka/
+  ADMIN_APP_ORIGIN: https://admin.siricondos.com

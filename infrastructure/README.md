@@ -61,7 +61,12 @@ At inspection, Harbor contained only `discovery-service:v0.0.1-dev` in the
 `gateway-service`, `provider-service`, `siricondos`, and `siricondos-admin`, then
 update each dev overlay's `newTag` to the actual published tag. Do not assume
 `v0.0.0-dev` exists. Supply service-specific database/auth configuration and
-credentials separately; the shared ConfigMap is currently empty. If the Harbor
+credentials separately. The dev shared ConfigMap contains the supplied service
+settings; `shared-env-secrets` in `apps-dev` supplies `POSTGRES_PASSWORD` and
+`PAYSTACK_SECRET_KEY` to backend services and is managed outside Git.
+The supplied API/payment URLs target production and the Paystack key is a live key.
+`NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` must also be supplied to frontend Docker builds,
+since Next.js public variables are embedded at build time. If the Harbor
 project becomes private, configure a read-only image-pull Secret in `apps-dev`.
 
 Check memory after bringing up each service. This VM is for a reduced development

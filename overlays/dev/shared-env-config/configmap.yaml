@@ -2,4 +2,15 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: shared-env-config
-data: {}
+data:
+  NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: AIzaSyAzOsgbTsN4iL0pN3_UD5zFdKLagmkwMBU
+  GRAPHQL_GATEWAY_URL: https://api.siricondos.com/graphql
+  ADMIN_GRAPHQL_ENDPOINT: https://api.siricondos.com/graphql
+  MAIN_URL: https://api.siricondos.com
+  POSTGRES_HOST: 45.79.237.142
+  POSTGRES_PORT: '5432'
+  POSTGRES_DB_NAME: siricondos
+  POSTGRES_USER: postgres
+  PAYSTACK_CALLBACK_URL: https://siricondos.com/partner/payments/return
+  LISTING_FEE: '3'
+  EUREKA_DEFAULT_ZONE: http://discovery-service/eureka/

@@ -15,3 +15,6 @@ patches:
       - op: replace
         path: /spec/rules/0/host
         value: api.siricondos.com
+
+components:
+  - ../../../components/backend-secrets

@@ -94,3 +94,12 @@ It assumes `/root/harbor/harbor` and the `harbor-log` container already exist.
 Install it in `/etc/systemd/system/harbor.service`, then run
 `systemctl daemon-reload` and `systemctl enable --now harbor.service`.
 This does not replace a Harbor data/database backup.
+
+## Shared production credentials
+
+The backend prod overlays reference `shared-env-secrets` in `apps-prod` through
+`components/backend-secrets`. Kubernetes Secrets are namespace-scoped: the prod
+Secret is a separate copy of the dev credentials, not a cross-namespace reference.
+Update both Secrets when rotating shared credentials; values are never stored here.
+Applying this Secret and the prod shared ConfigMap does not enable production.
+Production auto-sync and replica counts remain controlled separately.

@@ -14,7 +14,7 @@ spec:
                 - env: prod
                   namespace: apps-prod
           - git:
-              repoURL: git@github.com:siricondos/myapps-manifests.git
+              repoURL: https://github.com/siricondos/siricondos-ci.git
               revision: main
               directories:
                 - path: overlays/{{env}}/*
@@ -24,7 +24,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: git@github.com:siricondos/myapps-manifests.git
+        repoURL: https://github.com/siricondos/siricondos-ci.git
         targetRevision: main
         path: '{{path}}'
       destination:

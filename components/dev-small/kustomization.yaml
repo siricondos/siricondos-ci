@@ -1,0 +1,78 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+patches:
+- target:
+    kind: Deployment
+  patch: |
+    - op: replace
+      path: /spec/replicas
+      value: 1
+    - op: add
+      path: /spec/template/spec/containers/0/resources
+      value:
+        requests:
+          cpu: 50m
+          memory: 128Mi
+        limits:
+          memory: 384Mi
+    - op: add
+      path: /spec/template/spec/containers/0/startupProbe
+      value:
+        tcpSocket:
+          port: 8080
+        periodSeconds: 5
+        failureThreshold: 60
+        timeoutSeconds: 2
+    - op: add
+      path: /spec/template/spec/containers/0/readinessProbe/timeoutSeconds
+      value: 3
+    - op: add
+      path: /spec/template/spec/containers/0/livenessProbe/timeoutSeconds
+      value: 3
+    - op: add
+      path: /spec/strategy
+      value:
+        type: RollingUpdate
+        rollingUpdate:
+          maxSurge: 0
+          maxUnavailable: 1
+- target:
+    kind: Deployment
+    name: .*-service
+  patch: |
+    - op: add
+      path: /spec/template/spec/containers/0/env
+      value:
+      - name: SERVER_PORT
+        value: '8080'
+      - name: JAVA_TOOL_OPTIONS
+        value: -XX:MaxRAMPercentage=60 -XX:InitialRAMPercentage=20
+      - name: EUREKA_DEFAULT_ZONE
+        value: http://discovery-service/eureka/
+- target:
+    kind: Deployment
+    name: siricondos(-admin)?
+  patch: |
+    - op: add
+      path: /spec/template/spec/containers/0/env
+      value:
+      - name: PORT
+        value: '8080'
+      - name: HOSTNAME
+        value: 0.0.0.0
+      - name: NODE_OPTIONS
+        value: --max-old-space-size=256
+    - op: replace
+      path: /spec/template/spec/containers/0/readinessProbe
+      value:
+        tcpSocket:
+          port: 8080
+        periodSeconds: 10
+        timeoutSeconds: 3
+    - op: replace
+      path: /spec/template/spec/containers/0/livenessProbe
+      value:
+        tcpSocket:
+          port: 8080
+        periodSeconds: 20
+        timeoutSeconds: 3

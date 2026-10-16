@@ -1,0 +1,47 @@
+# Helm chart traefik/traefik 42.0.0. K3s ServiceLB exposes ports 80/443.
+deployment:
+  kind: DaemonSet
+ingressClass:
+  enabled: true
+  isDefaultClass: true
+ports:
+  web:
+    nodePort: 30080
+    exposedPort: 80
+  websecure:
+    nodePort: 30443
+    exposedPort: 443
+service:
+  spec:
+    type: LoadBalancer
+providers:
+  kubernetesCRD:
+    enabled: true
+  kubernetesIngress:
+    enabled: true
+persistence:
+  enabled: true
+  size: 128Mi
+  storageClass: local-path
+podSecurityContext:
+  fsGroup: 65532
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      storage: /data/acme.json
+      httpChallenge:
+        entryPoint: web
+additionalArguments:
+- --entryPoints.web.http.redirections.entryPoint.to=:443
+- --entryPoints.web.http.redirections.entryPoint.scheme=https
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    memory: 256Mi
+updateStrategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxUnavailable: 1
+    maxSurge: 0

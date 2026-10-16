@@ -5,19 +5,17 @@ metadata:
   namespace: argocd
 spec:
   generators:
-    - matrix:
-        generators:
-          - list:
-              elements:
-                - env: dev
-                  namespace: apps-dev
-                - env: prod
-                  namespace: apps-prod
-          - git:
-              repoURL: https://github.com/siricondos/siricondos-ci.git
-              revision: main
-              directories:
-                - path: overlays/{{env}}/*
+  - matrix:
+      generators:
+      - list:
+          elements:
+          - env: dev
+            namespace: apps-dev
+      - git:
+          repoURL: https://github.com/siricondos/siricondos-ci.git
+          revision: main
+          directories:
+          - path: overlays/{{env}}/*
   template:
     metadata:
       name: '{{env}}-{{path.basename}}'
@@ -35,4 +33,7 @@ spec:
           prune: true
           selfHeal: true
         syncOptions:
-          - CreateNamespace=true
+        - CreateNamespace=true
+  syncPolicy:
+    applicationsSync: create-update
+    preserveResourcesOnDeletion: true

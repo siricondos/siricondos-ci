@@ -1,17 +1,25 @@
 namespace: apps-dev
-
 resources:
-  - ../../../base/siricondos-admin
-
+- ../../../base/siricondos-admin
 images:
-  - name: registry.siricondos.com/siricondos/siricondos-admin
-    newTag: v0.0.0-dev
-
+- name: registry.siricondos.com/siricondos/siricondos-admin
+  newTag: v0.0.0-dev
 patches:
-  - target:
-      kind: Ingress
-      name: siricondos-admin
-    patch: |-
-      - op: replace
-        path: /spec/rules/0/host
-        value: admin-dev.siricondos.com
+- target:
+    kind: Ingress
+    name: siricondos-admin
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: admin-dev.siricondos.com
+- target:
+    kind: Ingress
+  patch: |
+    - op: add
+      path: /metadata/annotations
+      value:
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/router.tls: 'true'
+        traefik.ingress.kubernetes.io/router.tls.certresolver: letsencrypt
+components:
+- ../../../components/dev-small

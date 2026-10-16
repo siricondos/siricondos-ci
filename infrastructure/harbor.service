@@ -1,0 +1,19 @@
+[Unit]
+Description=Start existing Harbor Compose stack after Docker
+Requires=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/root/harbor/harbor
+ExecStartPre=/usr/bin/docker start harbor-log
+ExecStartPre=/bin/sh -c 'for attempt in $(seq 1 60); do [ "$(/usr/bin/docker inspect -f {{.State.Health.Status}} harbor-log)" = healthy ] && exit 0; sleep 2; done; exit 1'
+ExecStart=/usr/bin/docker compose --progress plain start
+TimeoutStartSec=180
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

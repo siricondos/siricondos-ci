@@ -1,0 +1,8 @@
+namespace: apps-dev
+
+resources:
+  - ../../../base/file-service
+
+images:
+  - name: registry.siricondos.com/siricondos/file-service
+    newTag: v0.0.0-dev

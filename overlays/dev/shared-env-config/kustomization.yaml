@@ -1,0 +1,4 @@
+namespace: apps-dev
+
+resources:
+  - configmap.yaml

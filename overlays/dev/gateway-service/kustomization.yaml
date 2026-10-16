@@ -1,0 +1,17 @@
+namespace: apps-dev
+
+resources:
+  - ../../../base/gateway-service
+
+images:
+  - name: registry.siricondos.com/siricondos/gateway-service
+    newTag: v0.0.0-dev
+
+patches:
+  - target:
+      kind: Ingress
+      name: gateway-service
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: api-dev.siricondos.com

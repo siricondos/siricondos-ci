@@ -1,0 +1,8 @@
+namespace: apps-dev
+
+resources:
+  - ../../../base/authentication-service
+
+images:
+  - name: registry.siricondos.com/siricondos/authentication-service
+    newTag: v0.0.0-dev

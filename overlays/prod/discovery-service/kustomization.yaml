@@ -1,0 +1,8 @@
+namespace: apps-prod
+
+resources:
+  - ../../../base/discovery-service
+
+images:
+  - name: registry.siricondos.com/siricondos/discovery-service
+    newTag: v0.0.0

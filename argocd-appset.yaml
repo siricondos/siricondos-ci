@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: myapps
+  namespace: argocd
+spec:
+  generators:
+    - matrix:
+        generators:
+          - list:
+              elements:
+                - env: dev
+                  namespace: apps-dev
+                - env: prod
+                  namespace: apps-prod
+          - git:
+              repoURL: git@github.com:siricondos/myapps-manifests.git
+              revision: main
+              directories:
+                - path: overlays/{{env}}/*
+  template:
+    metadata:
+      name: '{{env}}-{{path.basename}}'
+    spec:
+      project: default
+      source:
+        repoURL: git@github.com:siricondos/myapps-manifests.git
+        targetRevision: main
+        path: '{{path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

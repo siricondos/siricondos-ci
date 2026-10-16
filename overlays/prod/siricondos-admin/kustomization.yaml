@@ -1,0 +1,17 @@
+namespace: apps-prod
+
+resources:
+  - ../../../base/siricondos-admin
+
+images:
+  - name: registry.siricondos.com/siricondos/siricondos-admin
+    newTag: v0.0.0
+
+patches:
+  - target:
+      kind: Ingress
+      name: siricondos-admin
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: admin.siricondos.com

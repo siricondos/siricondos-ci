@@ -9,3 +9,4 @@ images:
 
 components:
   - ../../../components/backend-secrets
+  - ../../../components/prod-small

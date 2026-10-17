@@ -1,8 +1,32 @@
-# Single-VM dev deployment
+# Single-VM deployment
 
 This setup targets the existing k3s node at 45.79.237.142 (2 CPUs, 4 GiB RAM).
 Harbor remains in Docker Compose; Traefik terminates HTTPS for Harbor, Argo CD,
 and the dev applications. Caddy is not required after the ingress cutover.
+
+## Temporary dev + prod capacity plan
+
+The planned upgrade is 4 vCPUs / 8 GiB RAM. Verify the resize before enabling
+production; this repository change does not resize the VM or enable prod sync.
+Both environments use one replica per application. Production overlays include
+`components/prod-small`: 100m CPU / 256 MiB memory requests per pod, 512 MiB
+memory limits for Java services and 384 MiB for frontends, bounded Java/Node
+heaps, and startup probes. Backend Secrets remain supplied by `backend-secrets`.
+
+The seven dev pods have combined memory limits of 2.625 GiB; the seven prod pods
+have combined limits of 3.25 GiB. That leaves only about 2.1 GiB on an 8 GiB VM
+if all application pods reach their limits, before OS, K3s, Argo CD and Harbor.
+This is a constrained low-traffic trial, not established full-stack capacity.
+Monitor host memory as well as pod usage because Harbor runs outside Kubernetes.
+If memory pressure persists, move Harbor off the VM or increase RAM.
+
+Small profiles use `maxSurge: 0` and `maxUnavailable: 1` to avoid extra rollout
+pods. With one replica, deployments cause a brief service interruption. After
+the resize, verify production images and configuration and sync one application
+at a time, checking readiness, restarts, OOM events and available host memory.
+Keep production auto-sync disabled until the complete stack has been validated.
+As capacity grows, update the prod profile's resources, replicas and rollout
+strategy together; base replica counts are overridden by the small profile.
 
 ## Configuration
 

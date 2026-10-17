@@ -5,7 +5,7 @@ resources:
 
 images:
   - name: registry.siricondos.com/siricondos/file-service
-    newTag: v0.0.0
+    newTag: v0.0.1
 
 components:
   - ../../../components/backend-secrets

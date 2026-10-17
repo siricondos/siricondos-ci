@@ -6,7 +6,8 @@ patches:
   patch: |
     - op: replace
       path: /spec/replicas
-      value: 1
+      # Production is temporarily paused. Restore to 1 to resume.
+      value: 0
     - op: add
       path: /spec/template/spec/containers/0/resources
       value:

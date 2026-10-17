@@ -8,7 +8,10 @@ and the dev applications. Caddy is not required after the ingress cutover.
 
 The planned upgrade is 4 vCPUs / 8 GiB RAM. Verify the resize before enabling
 production; this repository change does not resize the VM or enable prod sync.
-Both environments use one replica per application. Production overlays include
+Production is temporarily paused with zero replicas per application in
+`components/prod-small`; dev continues to use one replica per application.
+Restore the production replica value to `1` and sync to resume after verifying
+capacity. Production overlays include
 `components/prod-small`: 100m CPU / 256 MiB memory requests per pod, 512 MiB
 memory limits for Java services and 384 MiB for frontends, bounded Java/Node
 heaps, and startup probes. Backend Secrets remain supplied by `backend-secrets`.
